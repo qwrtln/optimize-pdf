@@ -1,11 +1,45 @@
 #!/usr/bin/env bash
 set -e
 
-FILE_NAME=$1
-QUALITY_LEVEL=$2
-CONVERT_TO_CMYK=$3
-TEST_STRING=$4
-OUTPUT_FILE=$5
+FILE_NAME=""
+QUALITY_LEVEL="prepress"
+CONVERT_TO_CMYK="false"
+TEST_STRING=""
+OUTPUT_FILE=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --file-name)
+      FILE_NAME="$2"
+      shift 2
+      ;;
+    --quality-level)
+      QUALITY_LEVEL="$2"
+      shift 2
+      ;;
+    --convert-to-cmyk)
+      CONVERT_TO_CMYK="$2"
+      shift 2
+      ;;
+    --test-string)
+      TEST_STRING="$2"
+      shift 2
+      ;;
+    --output-file)
+      OUTPUT_FILE="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "${FILE_NAME}" ]]; then
+  echo "Error: file-name is required"
+  exit 1
+fi
 
 echo "Processing file: ${FILE_NAME}"
 echo "Quality level: ${QUALITY_LEVEL}"
@@ -19,7 +53,11 @@ if [[ ! -f "${FILE_NAME}" ]]; then
   exit 1
 fi
 
-/optimize.sh "${FILE_NAME}" "${QUALITY_LEVEL}" "${CONVERT_TO_CMYK}" "${OUTPUT_FILE}"
+/optimize.sh \
+  --file-name "${FILE_NAME}" \
+  --quality-level "${QUALITY_LEVEL}" \
+  --convert-to-cmyk "${CONVERT_TO_CMYK}" \
+  --output-file "${OUTPUT_FILE}"
 
 # Determine which file to check for page count
 CHECK_FILE="${FILE_NAME}"

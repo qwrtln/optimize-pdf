@@ -1,7 +1,7 @@
 # PDF Optimizer
 
 This action optimizes PDF files using Ghostscript, verifies their integrity, and provides file size metrics.
-It's primary purpose is to serve Rule Book Rewrite and Fan-Made Mission Book repositories, although it should work with any PDF file built in the CI.
+It's primary purpose is to serve [Rule Book Rewrite](https://github.com/Heegu-sama/Homm3BG) and [Fan-Made Mission Book](https://github.com/qwrtln/Homm3BG-mission-book) repositories, although it should work with any PDF file built in the CI.
 
 ## Usage
 
@@ -10,26 +10,27 @@ It's primary purpose is to serve Rule Book Rewrite and Fan-Made Mission Book rep
 ```yaml
 - uses: qwrtln/optimize-pdf@v1
   with:
-    # Input file. Must be in PDF format.
+    # Input PDF file path.
     # Required.
-    file-name:
+    file-name: 
 
-    # File to write to.
-    # Optional. Overwrites input file, if unspecified.
-    output-file:
+    # Output file path.
+    # Optional. If not specified, the input file will be overwritten.
+    output-file: 
 
-    # Ghostscript's quality level for optimization: scree, ebook, printer, prepress, default (see below for details).
-    # Optional. Defaults to prepress.
-    quality-level:
+    # Ghostscript quality level for optimization.
+    # Options: "screen", "ebook", "printer", "prepress", "default"
+    # Optional. Defaults to "prepress".
+    quality-level: 
 
-    # Text to look for in the resulting PDF file to detect broken CMap integroty.
-    # Ghostscript 10.04 would break it for files built with LuaLaTeX.
-    # Optional. The check is skipped if unspecified.
-    test-string:
+    # Text string to search for in the optimized PDF to verify CMap integrity.
+    # This helps detect issues that can occur with Ghostscript 10.04 in LuaLaTeX-generated PDFs.
+    # Optional. CMap integrity check is skipped if not specified.
+    test-string: 
 
-    # Whether to convert colors to CMYK color space for optimized printing.
-    # Optional. Defaults to false.
-    convert-to-cmyk:
+    # Convert colors to CMYK color space for printing.
+    # Optional. Defaults to "false".
+    convert-to-cmyk: 
 ```
 
 ## Outputs

@@ -1,9 +1,35 @@
 #!/usr/bin/env bash
+set -e
 
-FILE_NAME=$1
-QUALITY=$2
-CMYK=$3
-OUTPUT_FILE=$4
+FILE_NAME=""
+QUALITY="prepress"
+CMYK="false"
+OUTPUT_FILE=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --file-name)
+      FILE_NAME="$2"
+      shift 2
+      ;;
+    --quality-level)
+      QUALITY="$2"
+      shift 2
+      ;;
+    --convert-to-cmyk)
+      CMYK="$2"
+      shift 2
+      ;;
+    --output-file)
+      OUTPUT_FILE="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
 
 EXTENSION="${FILE_NAME##*.}"
 BASE_NAME="${FILE_NAME%.*}"
@@ -16,13 +42,10 @@ else
   TEMP_OUTPUT="${OUTPUT_FILE}"
 fi
 
-if [[ -z "$QUALITY" ]]; then
-  QUALITY="prepress"
-fi
-
 ARGS="-dPDFSETTINGS=/${QUALITY} -dDetectDuplicateImages=true"
 
 if [[ "${CMYK}" == "true" ]]; then
+  echo "Adding CMYK conversion arguments"
   ARGS="${ARGS} -sColorConversionStrategy=CMYK"
 fi
 

@@ -30,8 +30,8 @@ runs:
       uses: docker://ghcr.io/qwrtln/pdf-optimizer:v1
       with:
         args: >
-          ${{ inputs.file-name }}
-          ${{ inputs.quality-level }}
-          ${{ inputs.convert-to-cmyk }}
-          ${{ inputs.test-string }}
-          ${{ inputs.output-file }}
+          --file-name "${{ inputs.file-name }}"
+          --quality-level "${{ inputs.quality-level }}"
+          --convert-to-cmyk "${{ inputs.convert-to-cmyk }}"
+          --test-string "${{ inputs.test-string }}"
+          --output-file "${{ inputs.output-file }}"
