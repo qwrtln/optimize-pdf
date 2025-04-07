@@ -1,0 +1,28 @@
+name: 'PDF Optimizer'
+description: 'Optimize PDFs with Ghostscript and verify integrity'
+inputs:
+  file-name:
+    description: 'Name of the PDF file to optimize'
+    required: true
+  quality-level:
+    description: 'Quality level for optimization (screen, ebook, printer, prepress, default)'
+    required: false
+    default: 'prepress'
+  test-string:
+    description: 'Test string to verify CMap integrity'
+    required: false
+  convert-to-cmyk:
+    description: 'Whether to convert to CMYK color space'
+    required: false
+    default: 'false'
+outputs:
+  page-count:
+    description: 'Page count in the optimized PDF'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.file-name }}
+    - ${{ inputs.quality-level }}
+    - ${{ inputs.convert-to-cmyk }}
+    - ${{ inputs.test-string }}
