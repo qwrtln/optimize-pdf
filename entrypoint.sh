@@ -33,12 +33,11 @@ echo "page-count=${PAGE_COUNT}" >> "$GITHUB_OUTPUT"
 # Check for broken CMap if test string is provided
 if [[ -n "${TEST_STRING}" ]]; then
   echo "Checking CMap integrity with test string: ${TEST_STRING}"
-  
   pdftotext "${CHECK_FILE}" - | tr '\n' ' ' > "${CHECK_FILE}.txt"
   if grep -iq "${TEST_STRING}" "${CHECK_FILE}.txt"; then
     echo "✅ CMap integrity check passed"
   else
-    echo "❌ The CMap in ${CHECK_FILE} file is broken"
+    echo "❌ Test string not found, it's possible the CMap in ${CHECK_FILE} file is broken"
     exit 1
   fi
 fi

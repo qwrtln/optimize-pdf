@@ -21,10 +21,12 @@ inputs:
 outputs:
   page-count:
     description: 'Page count in the optimized PDF'
+    value: ${{ steps.optimize.outputs.page-count }}
 runs:
   using: 'composite'
   steps:
     - name: Optimize PDF
+      id: optimize
       uses: docker://ghcr.io/qwrtln/pdf-optimizer:v1
       with:
         args: >
