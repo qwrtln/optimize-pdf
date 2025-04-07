@@ -42,11 +42,9 @@ else
   TEMP_OUTPUT="${OUTPUT_FILE}"
 fi
 
-ARGS="-dPDFSETTINGS=/${QUALITY} -dDetectDuplicateImages=true"
-
 if [[ "${CMYK}" == "true" ]]; then
   echo "Adding CMYK conversion arguments"
-  ARGS="${ARGS} -sColorConversionStrategy=CMYK"
+  ARGS=-sColorConversionStrategy=CMYK
 fi
 
 ORIGINAL_SIZE=$(du -sk "${FILE_NAME}" | cut -f1)
@@ -54,9 +52,10 @@ ORIGINAL_SIZE_HUMAN=$(du -sh "${FILE_NAME}" | cut -f1)
 
 gs -o "${TEMP_OUTPUT}" \
   -sDEVICE=pdfwrite \
-  -dCompatibilityLevel=1.5 \
-  "${ARGS}" \
-  "${FILE_NAME}"
+  -dCompatibilityLevel=1.7 \
+  -dPDFSETTINGS=/${QUALITY} \
+  -dDetectDuplicateImages=true \
+  "${ARGS}" "${FILE_NAME}"
 
 NEW_SIZE=$(du -sk "${TEMP_OUTPUT}" | cut -f1)
 NEW_SIZE_HUMAN=$(du -sh "${TEMP_OUTPUT}" | cut -f1)

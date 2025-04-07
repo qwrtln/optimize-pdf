@@ -41,16 +41,16 @@ if [[ -z "${FILE_NAME}" ]]; then
   exit 1
 fi
 
+if [[ ! -f "${FILE_NAME}" ]]; then
+  echo "Error: File ${FILE_NAME} does not exist"
+  exit 1
+fi
+
 echo "Processing file: ${FILE_NAME}"
 echo "Quality level: ${QUALITY_LEVEL}"
 echo "Convert to CMYK: ${CONVERT_TO_CMYK}"
 if [[ -n "${OUTPUT_FILE}" ]]; then
   echo "Output file: ${OUTPUT_FILE}"
-fi
-
-if [[ ! -f "${FILE_NAME}" ]]; then
-  echo "Error: File ${FILE_NAME} does not exist"
-  exit 1
 fi
 
 /optimize.sh \
