@@ -5,6 +5,7 @@ FILE_NAME=""
 QUALITY="prepress"
 CMYK="false"
 OUTPUT_FILE=""
+ARGS=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -43,7 +44,6 @@ else
 fi
 
 if [[ "${CMYK}" == "true" ]]; then
-  echo "Adding CMYK conversion arguments"
   ARGS=-sColorConversionStrategy=CMYK
 fi
 
@@ -55,7 +55,7 @@ gs -o "${TEMP_OUTPUT}" \
   -dCompatibilityLevel=1.7 \
   -dPDFSETTINGS=/${QUALITY} \
   -dDetectDuplicateImages=true \
-  "${ARGS}" "${FILE_NAME}"
+  ${ARGS} ${FILE_NAME}
 
 NEW_SIZE=$(du -sk "${TEMP_OUTPUT}" | cut -f1)
 NEW_SIZE_HUMAN=$(du -sh "${TEMP_OUTPUT}" | cut -f1)
