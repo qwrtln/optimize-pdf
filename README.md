@@ -1,35 +1,36 @@
 # PDF Optimizer
 
 This action optimizes PDF files using Ghostscript, verifies their integrity, and provides file size metrics.
-Perfect for reducing the size of documentation, reports, and other PDF assets in your repositories.
-
-## Features
-
-- 📏 Reduces PDF file size with configurable quality settings
-- ✅ Verifies PDF integrity with custom text verification
-- 🎨 Optional CMYK color space conversion for print-ready files
-- 📊 Reports original and optimized file sizes
-- 📄 Counts pages in the optimized PDF
+It's primary purpose is to serve Rule Book Rewrite and Fan-Made Mission Book repositories, although it should work with any PDF file built in the CI.
 
 ## Usage
 
+### Inputs
+
 ```yaml
-- name: Optimize PDF
-  uses: qwrtln/optimize-pdf@v1
+- uses: qwrtln/optimize-pdf@v1
   with:
-    file-name: 'document.pdf'
-    quality-level: 'prepress'
+    # Input file. Must be in PDF format.
+    # Required.
+    file-name:
+
+    # File to write to.
+    # Optional. Overwrites input file, if unspecified.
+    output-file:
+
+    # Ghostscript's quality level for optimization: scree, ebook, printer, prepress, default (see below for details).
+    # Optional. Defaults to prepress.
+    quality-level:
+
+    # Text to look for in the resulting PDF file to detect broken CMap integroty.
+    # Ghostscript 10.04 would break it for files built with LuaLaTeX.
+    # Optional. The check is skipped if unspecified.
+    test-string:
+
+    # Whether to convert colors to CMYK color space for optimized printing.
+    # Optional. Defaults to false.
+    convert-to-cmyk:
 ```
-
-## Inputs
-
-| Input | Description | Required | Default |
-|-------|-------------|:--------:|:-------:|
-| `file-name` | PDF file to optimize | Yes | - |
-| `output-file` | Output file path (if not specified, input file will be overwritten) | No | - |
-| `quality-level` | Quality level for optimization: `screen`, `ebook`, `printer`, `prepress`, `default` | No | `prepress` |
-| `test-string` | Test string to verify text integrity in the PDF after optimization | No | - |
-| `convert-to-cmyk` | Whether to convert colors to CMYK color space | No | `false` |
 
 ## Outputs
 
@@ -51,10 +52,10 @@ Perfect for reducing the size of documentation, reports, and other PDF assets in
 
 ```yaml
 - name: Checkout
-  uses: actions/checkout@v3
+  uses: actions/checkout@v4
 
 - name: Optimize PDF
-  uses: yourusername/pdf-optimizer@v1
+  uses: qwrtln/optimize-pdf@v1
   with:
     file-name: 'documentation.pdf'
 ```
@@ -64,54 +65,15 @@ Perfect for reducing the size of documentation, reports, and other PDF assets in
 ```yaml
 - name: Optimize PDF with Verification
   id: optimize
-  uses: yourusername/pdf-optimizer@v1
+  uses: qwrtln/optimize-pdf@v1
   with:
     file-name: 'documentation.pdf'
     output-file: 'documentation-optimized.pdf'
     quality-level: 'ebook'
-    test-string: 'Copyright 2025'
+    test-string: 'Copyleft 2025'
     convert-to-cmyk: 'true'
 
 - name: Use optimization results
   run: |
     echo "The optimized PDF has ${{ steps.optimize.outputs.page-count }} pages"
-```
-
-### Workflow Example: Optimize and Release PDFs
-
-```yaml
-name: Optimize and Release PDFs
-
-on:
-  push:
-    tags:
-      - 'v*'
-
-jobs:
-  optimize-pdfs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        
-      - name: Optimize Documentation
-        id: optimize-docs
-        uses: yourusername/pdf-optimizer@v1
-        with:
-          file-name: 'docs/manual.pdf'
-          output-file: 'optimized-manual.pdf'
-          quality-level: 'ebook'
-          test-string: 'Table of Contents'
-      
-      - name: Upload Optimized PDF
-        uses: actions/upload-artifact@v3
-        with:
-          name: optimized-documentation
-          path: optimized-manual.pdf
-          
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: optimized-manual.pdf
 ```
