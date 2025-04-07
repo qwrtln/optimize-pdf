@@ -4,6 +4,9 @@ inputs:
   file-name:
     description: 'Name of the PDF file to optimize'
     required: true
+  output-file:
+    description: 'Output file path (if not specified, input file will be overwritten)'
+    required: false
   quality-level:
     description: 'Quality level for optimization (screen, ebook, printer, prepress, default)'
     required: false
@@ -19,10 +22,14 @@ outputs:
   page-count:
     description: 'Page count in the optimized PDF'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.file-name }}
-    - ${{ inputs.quality-level }}
-    - ${{ inputs.convert-to-cmyk }}
-    - ${{ inputs.test-string }}
+  using: 'composite'
+  steps:
+    - name: Optimize PDF
+      uses: docker://ghcr.io/qwrtln/pdf-optimizer:v1
+      with:
+        args: >
+          ${{ inputs.file-name }}
+          ${{ inputs.quality-level }}
+          ${{ inputs.convert-to-cmyk }}
+          ${{ inputs.test-string }}
+          ${{ inputs.output-file }}
