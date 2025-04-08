@@ -35,12 +35,25 @@ done
 EXTENSION="${FILE_NAME##*.}"
 BASE_NAME="${FILE_NAME%.*}"
 
-if [[ -z "${OUTPUT_FILE}" ]]; then
+# Handle directory paths in output file
+if [[ -n "${OUTPUT_FILE}" ]]; then
+  OUTPUT_DIR=$(dirname "${OUTPUT_FILE}")
+  
+  if [[ "${OUTPUT_DIR}" != "." ]]; then
+    mkdir -p "${OUTPUT_DIR}"
+  fi
+  
+  FINAL_OUTPUT="${OUTPUT_FILE}"
+  
+  if [[ "${OUTPUT_FILE}" == "${FILE_NAME}" ]]; then
+    TEMP_OUTPUT="${BASE_NAME}_temp_$$.${EXTENSION}"
+    echo "Input and output files are the same, using temporary file for processing"
+  else
+    TEMP_OUTPUT="${OUTPUT_FILE}"
+  fi
+else
   FINAL_OUTPUT="${FILE_NAME}"
   TEMP_OUTPUT="${BASE_NAME}_optimized.${EXTENSION}"
-else
-  FINAL_OUTPUT="${OUTPUT_FILE}"
-  TEMP_OUTPUT="${OUTPUT_FILE}"
 fi
 
 if [[ "${CMYK}" == "true" ]]; then
@@ -66,6 +79,6 @@ SAVED_MB=$(awk "BEGIN {printf \"%.2f\", ${SAVED_KB}/1024}")
 printf "Original size:  %8s\n" "${ORIGINAL_SIZE_HUMAN}"
 printf "Optimized size: %8s (%s MB saved)\n" "${NEW_SIZE_HUMAN}" "${SAVED_MB}"
 
-if [[ -z "${OUTPUT_FILE}" ]]; then
+if [[ "${TEMP_OUTPUT}" != "${FINAL_OUTPUT}" ]]; then
   mv "${TEMP_OUTPUT}" "${FINAL_OUTPUT}"
 fi
