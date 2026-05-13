@@ -3,12 +3,14 @@
 This action optimizes PDF files using Ghostscript, verifies their integrity, and provides file size metrics.
 It's primary purpose is to serve [Rule Book Rewrite](https://github.com/Heegu-sama/Homm3BG) and [Fan-Made Mission Book](https://github.com/qwrtln/Homm3BG-mission-book) repositories, although it should work with any PDF file built in the CI.
 
+Action releases are versioned to match the upstream Ghostscript release they ship.
+
 ## Usage
 
 ### Inputs
 
 ```yaml
-- uses: qwrtln/optimize-pdf@v1
+- uses: qwrtln/optimize-pdf@v10.07
   with:
     # Input PDF file path.
     # Required.
@@ -53,10 +55,10 @@ It's primary purpose is to serve [Rule Book Rewrite](https://github.com/Heegu-sa
 
 ```yaml
 - name: Checkout
-  uses: actions/checkout@v4
+  uses: actions/checkout@v6
 
 - name: Optimize PDF
-  uses: qwrtln/optimize-pdf@v1
+  uses: qwrtln/optimize-pdf@v10.07
   with:
     file-name: 'documentation.pdf'
 ```
@@ -66,7 +68,7 @@ It's primary purpose is to serve [Rule Book Rewrite](https://github.com/Heegu-sa
 ```yaml
 - name: Optimize PDF with Verification
   id: optimize
-  uses: qwrtln/optimize-pdf@v1
+  uses: qwrtln/optimize-pdf@v10.07
   with:
     file-name: 'documentation.pdf'
     output-file: 'documentation-optimized.pdf'

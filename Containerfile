@@ -1,8 +1,8 @@
-FROM debian:trixie-slim
+FROM debian:forky-slim
 
 RUN apt-get update && apt-get install -y \
     poppler-utils \
-    ghostscript=10.05.0~dfsg-1 \
+    ghostscript=10.07.0~dfsg-2 \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
