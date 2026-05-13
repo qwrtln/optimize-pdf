@@ -27,7 +27,7 @@ runs:
   steps:
     - name: Optimize PDF
       id: optimize
-      uses: docker://ghcr.io/qwrtln/pdf-optimizer:v1
+      uses: docker://ghcr.io/qwrtln/pdf-optimizer:v10.07
       with:
         args: >
           --file-name "${{ inputs.file-name }}"
