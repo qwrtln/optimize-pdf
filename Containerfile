@@ -1,10 +1,9 @@
-FROM debian:trixie-slim
+FROM alpine:3.21
 
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
+    bash \
     poppler-utils \
-    ghostscript=10.05.0~dfsg-1 \
-    --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+    ghostscript
 
 COPY entrypoint.sh /entrypoint.sh
 COPY optimize.sh /optimize.sh
