@@ -5,6 +5,7 @@ FILE_NAME=""
 QUALITY="prepress"
 CMYK="false"
 OUTPUT_FILE=""
+REPAIR="true"
 ARGS=""
 
 while [[ $# -gt 0 ]]; do
@@ -23,6 +24,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --output-file)
       OUTPUT_FILE="$2"
+      shift 2
+      ;;
+    --repair-tounicode)
+      REPAIR="$2"
       shift 2
       ;;
     *)
@@ -69,6 +74,15 @@ gs -o "${TEMP_OUTPUT}" \
   -dPDFSETTINGS=/${QUALITY} \
   -dDetectDuplicateImages=true \
   ${ARGS} ${FILE_NAME}
+
+# Ghostscript breaks the text of three-letter ligatures in LuaTeX PDFs: "ffi"
+# becomes "fÏ", so "difficult" extracts as "difÏcult". Copy the right
+# ToUnicode entries back from the original, which is still untouched here.
+if [[ "${REPAIR}" == "true" ]]; then
+  REPAIRED_OUTPUT="${BASE_NAME}_repaired_$$.${EXTENSION}"
+  python3 /repair_tounicode.py "${FILE_NAME}" "${TEMP_OUTPUT}" "${REPAIRED_OUTPUT}"
+  mv "${REPAIRED_OUTPUT}" "${TEMP_OUTPUT}"
+fi
 
 NEW_SIZE=$(du -sk "${TEMP_OUTPUT}" | cut -f1)
 NEW_SIZE_HUMAN=$(du -sh "${TEMP_OUTPUT}" | cut -f1)

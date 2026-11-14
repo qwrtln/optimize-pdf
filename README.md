@@ -10,7 +10,7 @@ Action releases are versioned to match the upstream Ghostscript release they shi
 ### Inputs
 
 ```yaml
-- uses: qwrtln/optimize-pdf@v10.07
+- uses: qwrtln/optimize-pdf@v10.08
   with:
     # Input PDF file path.
     # Required.
@@ -33,6 +33,12 @@ Action releases are versioned to match the upstream Ghostscript release they shi
     # Convert colors to CMYK color space for printing.
     # Optional. Defaults to "false".
     convert-to-cmyk: 
+
+    # Restore the text of the "ffi" and "ffl" ligatures, which Ghostscript breaks
+    # in LuaLaTeX-generated PDFs ("difficult" extracts as "difÏcult").
+    # The original PDF's ToUnicode entries are copied back after optimization.
+    # Optional. Defaults to "true".
+    repair-tounicode: 
 ```
 
 ## Outputs
@@ -58,7 +64,7 @@ Action releases are versioned to match the upstream Ghostscript release they shi
   uses: actions/checkout@v6
 
 - name: Optimize PDF
-  uses: qwrtln/optimize-pdf@v10.07
+  uses: qwrtln/optimize-pdf@v10.08
   with:
     file-name: 'documentation.pdf'
 ```
@@ -68,12 +74,12 @@ Action releases are versioned to match the upstream Ghostscript release they shi
 ```yaml
 - name: Optimize PDF with Verification
   id: optimize
-  uses: qwrtln/optimize-pdf@v10.07
+  uses: qwrtln/optimize-pdf@v10.08
   with:
     file-name: 'documentation.pdf'
     output-file: 'documentation-optimized.pdf'
     quality-level: 'ebook'
-    test-string: 'Copyleft 2025'
+    test-string: 'Copyleft 2027'
     convert-to-cmyk: 'true'
 
 - name: Use optimization results

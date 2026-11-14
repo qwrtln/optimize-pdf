@@ -36,4 +36,4 @@ jobs:
           file: ./Containerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/${{ github.repository_owner }}/pdf-optimizer:v10.07
+            ghcr.io/${{ github.repository_owner }}/pdf-optimizer:v10.08

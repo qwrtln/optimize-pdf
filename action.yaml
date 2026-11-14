@@ -18,6 +18,10 @@ inputs:
     description: 'Whether to convert to CMYK color space'
     required: false
     default: 'false'
+  repair-tounicode:
+    description: 'Whether to restore the ligature text (ffi, ffl) that Ghostscript breaks'
+    required: false
+    default: 'true'
 outputs:
   page-count:
     description: 'Page count in the optimized PDF'
@@ -27,7 +31,7 @@ runs:
   steps:
     - name: Optimize PDF
       id: optimize
-      uses: docker://ghcr.io/qwrtln/pdf-optimizer:v10.07
+      uses: docker://ghcr.io/qwrtln/pdf-optimizer:v10.08
       with:
         args: >
           --file-name "${{ inputs.file-name }}"
@@ -35,3 +39,4 @@ runs:
           --convert-to-cmyk "${{ inputs.convert-to-cmyk }}"
           --test-string "${{ inputs.test-string }}"
           --output-file "${{ inputs.output-file }}"
+          --repair-tounicode "${{ inputs.repair-tounicode }}"
