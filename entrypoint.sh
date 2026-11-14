@@ -6,6 +6,7 @@ QUALITY_LEVEL="prepress"
 CONVERT_TO_CMYK="false"
 TEST_STRING=""
 OUTPUT_FILE=""
+REPAIR_TOUNICODE="true"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -29,6 +30,10 @@ while [[ $# -gt 0 ]]; do
       OUTPUT_FILE="$2"
       shift 2
       ;;
+    --repair-tounicode)
+      REPAIR_TOUNICODE="$2"
+      shift 2
+      ;;
     *)
       echo "Unknown option: $1"
       exit 1
@@ -49,6 +54,7 @@ fi
 echo "Processing file: ${FILE_NAME}"
 echo "Quality level: ${QUALITY_LEVEL}"
 echo "Convert to CMYK: ${CONVERT_TO_CMYK}"
+echo "Repair ToUnicode: ${REPAIR_TOUNICODE}"
 if [[ -n "${OUTPUT_FILE}" ]]; then
   echo "Output file: ${OUTPUT_FILE}"
 fi
@@ -57,7 +63,8 @@ fi
   --file-name "${FILE_NAME}" \
   --quality-level "${QUALITY_LEVEL}" \
   --convert-to-cmyk "${CONVERT_TO_CMYK}" \
-  --output-file "${OUTPUT_FILE}"
+  --output-file "${OUTPUT_FILE}" \
+  --repair-tounicode "${REPAIR_TOUNICODE}"
 
 # Determine which file to check for page count
 CHECK_FILE="${FILE_NAME}"
