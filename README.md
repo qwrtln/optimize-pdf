@@ -34,9 +34,10 @@ Action releases are versioned to match the upstream Ghostscript release they shi
     # Optional. Defaults to "false".
     convert-to-cmyk: 
 
-    # Restore the text of the "ffi" and "ffl" ligatures, which Ghostscript breaks
-    # in LuaLaTeX-generated PDFs ("difficult" extracts as "difÏcult").
-    # The original PDF's ToUnicode entries are copied back after optimization.
+    # Restore the text that Ghostscript breaks in LuaLaTeX-generated PDFs: the
+    # "ffi" and "ffl" ligatures ("difficult" extracts as "difÏcult") and some
+    # CJK characters. Each optimized font gets the ToUnicode entries of its own
+    # font in the original PDF, also when several fonts share one name.
     # Optional. Defaults to "true".
     repair-tounicode: 
 ```

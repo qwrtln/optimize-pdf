@@ -1,2 +1,4 @@
 *.pdf
+!tests/fixtures/*.pdf
 *.txt
+__pycache__/
