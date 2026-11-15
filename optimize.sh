@@ -40,7 +40,6 @@ done
 EXTENSION="${FILE_NAME##*.}"
 BASE_NAME="${FILE_NAME%.*}"
 
-# Handle directory paths in output file
 if [[ -n "${OUTPUT_FILE}" ]]; then
   OUTPUT_DIR=$(dirname "${OUTPUT_FILE}")
   
@@ -75,9 +74,8 @@ gs -o "${TEMP_OUTPUT}" \
   -dDetectDuplicateImages=true \
   ${ARGS} ${FILE_NAME}
 
-# Ghostscript breaks the text of three-letter ligatures in LuaTeX PDFs: "ffi"
-# becomes "fÏ", so "difficult" extracts as "difÏcult". Copy the right
-# ToUnicode entries back from the original, which is still untouched here.
+# Ghostscript breaks text in LuaTeX PDFs; the repair needs the original, which
+# is still untouched here.
 if [[ "${REPAIR}" == "true" ]]; then
   REPAIRED_OUTPUT="${BASE_NAME}_repaired_$$.${EXTENSION}"
   python3 /repair_tounicode.py "${FILE_NAME}" "${TEMP_OUTPUT}" "${REPAIRED_OUTPUT}"

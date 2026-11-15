@@ -19,7 +19,7 @@ inputs:
     required: false
     default: 'false'
   repair-tounicode:
-    description: 'Whether to restore the ligature text (ffi, ffl) that Ghostscript breaks'
+    description: 'Whether to restore the text (ffi/ffl ligatures, CJK) that Ghostscript breaks'
     required: false
     default: 'true'
 outputs:

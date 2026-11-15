@@ -66,7 +66,6 @@ fi
   --output-file "${OUTPUT_FILE}" \
   --repair-tounicode "${REPAIR_TOUNICODE}"
 
-# Determine which file to check for page count
 CHECK_FILE="${FILE_NAME}"
 if [[ -n "${OUTPUT_FILE}" ]]; then
   CHECK_FILE="${OUTPUT_FILE}"
@@ -75,7 +74,6 @@ fi
 PAGE_COUNT=$(pdfinfo "${CHECK_FILE}" | awk '/^Pages:/ {print $2}')
 echo "page-count=${PAGE_COUNT}" >> "$GITHUB_OUTPUT"
 
-# Check for broken CMap if test string is provided
 if [[ -n "${TEST_STRING}" ]]; then
   echo "Checking CMap integrity with test string: ${TEST_STRING}"
   pdftotext "${CHECK_FILE}" - | tr '\n' ' ' > "${CHECK_FILE}.txt"
